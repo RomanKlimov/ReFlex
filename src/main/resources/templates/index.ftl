@@ -90,7 +90,6 @@ elements involved, they are created with markup (not JavaScript)
                 type: "POST",
                 data: myFormData,
                 // enctype: 'multipart/form-data',
-                dataType: 'json',
                 processData: false,
                 contentType: false,
                 cache: false,

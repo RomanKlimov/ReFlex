@@ -1,5 +1,8 @@
 package ru.itis.reflex;
 
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,18 +11,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @RestController
 public class HomeController {
-
-
-
     @PostMapping("/")
     public ResponseEntity<?> getPhoto(
             @RequestParam MultipartFile myImage) throws IOException {
-
-        String name = myImage.getOriginalFilename();
-        System.out.println("File name: "+name);
+        byte[] bytes = myImage.getBytes();
+        nu.pattern.OpenCV.loadShared();
+        Mat mat = Imgcodecs.imdecode(new MatOfByte(bytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 
         if (myImage.isEmpty()) {
             return new ResponseEntity("please select a file!", HttpStatus.OK);
