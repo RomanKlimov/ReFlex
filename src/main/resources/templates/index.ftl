@@ -33,26 +33,64 @@ elements involved, they are created with markup (not JavaScript)
         var myImage;
 
         function convertCanvasToImage(canvas) {
-            var image = new Image();
-            image.src = canvas.toDataURL("image/png");
-            return image;
+            var jpegUrl0 = canvas.toDataURL("image/jpeg");
+            var jpegUrl = jpegUrl0.replace(/^data:image\/(png|jpeg);base64,/, "");
+            return jpegUrl;
         }
         var myFormData = new FormData();
 
         // Trigger photo take
         document.getElementById("snap").addEventListener("click", function() {
             context.drawImage(video, 0, 0, 640, 480);
-            myImage = convertCanvasToImage(canvas);
-            myFormData.append('myImage', myImage);
+            jpegURL = convertCanvasToImage(canvas);
+            var myBlob = base64ToBlob(jpegURL, 'image/jpeg');
+
+            // var byteCharacters = atob(jpegURL);
+            // var byteNumbers = new Array(byteCharacters.length);
+            // for (var i = 0; i < byteCharacters.length; i++) {
+            //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+            // }
+            // var byteArray = new Uint8Array(byteNumbers);
+            // var blob = new Blob([byteArray], {type: contentType});
+
+
+
+            myFormData.append('myImage', myBlob);
+
             uploadFile(myFormData);
         });
+
+        // This function is used to convert base64 encoding to mime type (blob)
+        function base64ToBlob(base64, mime)
+        {
+            mime = mime || '';
+            var sliceSize = 1024;
+            var byteChars = window.atob(base64);
+            var byteArrays = [];
+
+            for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
+                var slice = byteChars.slice(offset, offset + sliceSize);
+
+                var byteNumbers = new Array(slice.length);
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                var byteArray = new Uint8Array(byteNumbers);
+
+                byteArrays.push(byteArray);
+            }
+
+            return new Blob(byteArrays, {type: mime});
+        }
 
         function uploadFile(myFormData) {
             $.ajax({
                 url: "/",
                 type: "POST",
                 data: myFormData,
-                enctype: 'multipart/form-data',
+                // enctype: 'multipart/form-data',
+                dataType: 'json',
                 processData: false,
                 contentType: false,
                 cache: false,
