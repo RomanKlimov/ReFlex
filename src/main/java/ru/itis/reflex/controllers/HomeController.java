@@ -1,4 +1,4 @@
-package ru.itis.reflex;
+package ru.itis.reflex.controllers;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;

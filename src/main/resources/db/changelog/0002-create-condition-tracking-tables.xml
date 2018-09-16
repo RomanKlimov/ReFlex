@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="01" author="svintenok">
+        <comment>Create tiredness_data, mood_data and posture_data tables</comment>
+        <createTable tableName="tiredness_data">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="morning_val" type="int"/>
+            <column name="evening_val" type="int"/>
+            <column name="user_id" type="int">
+            <constraints nullable="false"
+                         foreignKeyName="fk_user_id" referencedTableName="user" referencedColumnNames="id" />
+            </column>
+            <column name="date" type="date" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="mood_data">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="morning_val" type="int"/>
+            <column name="evening_val" type="int"/>
+            <column name="user_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_id" referencedTableName="user" referencedColumnNames="id" />
+            </column>
+            <column name="date" type="date" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+        <createTable tableName="posture_data">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="smooth_num" type="int" defaultValue="0"/>
+            <column name="flex_num" type="int" defaultValue="0"/>
+            <column name="user_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_id" referencedTableName="user" referencedColumnNames="id" />
+            </column>
+            <column name="date" type="date" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
