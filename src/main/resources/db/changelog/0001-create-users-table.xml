@@ -5,8 +5,20 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-
     <changeSet id="01" author="svintenok">
+        <comment>Create companies table</comment>
+        <createTable tableName="company">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints  unique="true" nullable="false" />
+            </column>
+            <column name="head_id" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="02" author="svintenok">
         <comment>Create departments table</comment>
         <createTable tableName="department">
             <column name="id" type="int" autoIncrement="true">
@@ -15,10 +27,15 @@
             <column name="name" type="varchar(45)">
                 <constraints  unique="true" nullable="false" />
             </column>
+            <column name="company_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_company_id" referencedTableName="company" referencedColumnNames="id" />
+            </column>
+            <column name="head_id" type="int"/>
         </createTable>
     </changeSet>
 
-    <changeSet id="02" author="svintenok">
+    <changeSet id="03" author="svintenok">
         <comment>Create users table</comment>
         <createTable tableName="user">
             <column name="id" type="int" autoIncrement="true">
@@ -39,7 +56,23 @@
             <column name="department_id" type="int">
                 <constraints foreignKeyName="fk_department_id" referencedTableName="department" referencedColumnNames="id" />
             </column>
+            <column name="company_id" type="int">
+                <constraints foreignKeyName="fk_company_id" referencedTableName="company" referencedColumnNames="id" />
+            </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="04" author="svintenok">
+        <addForeignKeyConstraint baseTableName="department"
+                                 baseColumnNames="head_id"
+                                 constraintName="depart_head_id_fk"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="company"
+                                 baseColumnNames="head_id"
+                                 constraintName="company_head_id_fk"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
 </databaseChangeLog>
