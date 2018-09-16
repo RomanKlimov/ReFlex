@@ -1,8 +1,17 @@
-package ru.itis.reflex.model;
+package ru.itis.reflex.models;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "mood_data")
 public class MoodData {
@@ -24,11 +33,4 @@ public class MoodData {
     @Column
     private Date date;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

@@ -1,6 +1,6 @@
-package ru.itis.reflex.Service;
+package ru.itis.reflex.services.interfaces;
 
-import ru.itis.reflex.model.User;
+import ru.itis.reflex.models.User;
 
 public interface UserService {
 

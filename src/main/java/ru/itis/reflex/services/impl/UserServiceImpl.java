@@ -1,10 +1,10 @@
-package ru.itis.reflex.Service.impl;
+package ru.itis.reflex.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.itis.reflex.Service.UserService;
-import ru.itis.reflex.model.User;
-import ru.itis.reflex.repository.UserRepository;
+import ru.itis.reflex.services.interfaces.UserService;
+import ru.itis.reflex.models.User;
+import ru.itis.reflex.repositories.UserRepository;
 
 
 @Service
