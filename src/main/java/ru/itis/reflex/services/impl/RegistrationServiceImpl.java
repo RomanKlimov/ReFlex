@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.itis.reflex.exceptions.EmailExistsException;
 import ru.itis.reflex.forms.AdminRegistrationForm;
 import ru.itis.reflex.models.User;
-import ru.itis.reflex.repositories.CompanyRepository;
 import ru.itis.reflex.repositories.UserRepository;
 import ru.itis.reflex.security.Role.Role;
 import ru.itis.reflex.services.interfaces.CompanyService;
@@ -28,7 +27,6 @@ public class RegistrationServiceImpl implements RegistrationSevice {
     @Override
     public void createAdminAccount(AdminRegistrationForm adminRegistrationForm) throws EmailExistsException {
         if (!userRepository.findOneByEmail(adminRegistrationForm.getEmail()).isPresent()){
-            System.out.println(companyService.getCompanyByName(adminRegistrationForm.getCompany()));
             User user = User.builder()
                     .name(adminRegistrationForm.getName())
                     .email(adminRegistrationForm.getEmail())
@@ -40,5 +38,3 @@ public class RegistrationServiceImpl implements RegistrationSevice {
         } else throw new EmailExistsException("Аккаунт с такой почтой уже зарегистрирован: " + adminRegistrationForm.getEmail());
     }
     }
-
-

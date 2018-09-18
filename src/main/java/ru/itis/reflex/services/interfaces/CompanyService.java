@@ -8,5 +8,6 @@ import ru.itis.reflex.models.Company;
 public interface CompanyService {
     void createCompany(String companyName) throws EmailExistsException, CompanyExistsException;
     Company getCompanyByName(String companyName);
+    void addCompanyHead(String companyName, String headEmail);
 
 }
