@@ -1,6 +1,7 @@
 package ru.itis.reflex.models;
 
 import lombok.*;
+import ru.itis.reflex.security.Role.Role;
 
 import javax.persistence.*;
 
@@ -27,8 +28,8 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
