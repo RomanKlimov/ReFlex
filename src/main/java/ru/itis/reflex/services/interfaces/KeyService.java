@@ -9,4 +9,6 @@ public interface KeyService {
     void addKeys(String emails, User user);
     List<Key> getAllKeys();
     List<Key> getAllByHead(User user);
+    List<Key> getKeysByEmails(String emails);
+    Key getKeyByEmail(String email);
 }

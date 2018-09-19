@@ -13,4 +13,7 @@ public interface KeyRepository extends JpaRepository<Key, Integer> {
     List<Key> findKeys();
 
     List<Key> getAllByHead(User user);
+
+    Key getByEmail(String email);
+
 }
