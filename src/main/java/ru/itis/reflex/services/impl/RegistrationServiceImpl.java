@@ -9,6 +9,7 @@ import ru.itis.reflex.forms.AdminRegistrationForm;
 import ru.itis.reflex.models.User;
 import ru.itis.reflex.repositories.UserRepository;
 import ru.itis.reflex.security.Role.Role;
+import ru.itis.reflex.security.webConfig.WebSecurityConfig;
 import ru.itis.reflex.services.interfaces.CompanyService;
 import ru.itis.reflex.services.interfaces.RegistrationSevice;
 
@@ -22,7 +23,8 @@ public class RegistrationServiceImpl implements RegistrationSevice {
     @Autowired
     private CompanyService companyService;
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private WebSecurityConfig webSecurityConfig;
 
     @Override
     public void createAdminAccount(AdminRegistrationForm adminRegistrationForm) throws EmailExistsException {
@@ -30,7 +32,7 @@ public class RegistrationServiceImpl implements RegistrationSevice {
             User user = User.builder()
                     .name(adminRegistrationForm.getName())
                     .email(adminRegistrationForm.getEmail())
-                    .password(passwordEncoder.encode(adminRegistrationForm.getPassword()))
+                    .password(webSecurityConfig.passwordEncoder().encode(adminRegistrationForm.getPassword()))
                     .company(companyService.getCompanyByName(adminRegistrationForm.getCompany()))
                     .role(Role.ADMIN)
                     .build();

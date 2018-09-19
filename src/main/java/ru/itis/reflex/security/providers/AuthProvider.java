@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.itis.reflex.models.User;
 import ru.itis.reflex.repositories.UserRepository;
+import ru.itis.reflex.security.webConfig.WebSecurityConfig;
 
 
 import java.util.Collection;
@@ -28,6 +29,7 @@ public class AuthProvider implements AuthenticationProvider {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

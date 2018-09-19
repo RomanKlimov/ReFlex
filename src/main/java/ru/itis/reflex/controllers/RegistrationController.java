@@ -50,7 +50,6 @@ public class RegistrationController {
         registrationService.createAdminAccount(adminRegistrationForm);
         companyService.addCompanyHead(adminRegistrationForm.getCompany(), adminRegistrationForm.getEmail());
 
-
         return "redirect:/login";
     }
 

@@ -44,4 +44,9 @@ public class CompanyServiceImpl implements CompanyService {
         companyByName.setHead(user);
         companyRepository.save(companyByName);
     }
+
+    @Override
+    public Company getCompanyByHead(User head) {
+        return companyRepository.findByHead(head);
+    }
 }
