@@ -10,12 +10,8 @@ import ru.itis.reflex.repositories.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Override
     public User getUser(Long id) {

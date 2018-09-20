@@ -1,16 +1,16 @@
 package ru.itis.reflex.models;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString
+@ToString(exclude = {"head"})
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "company")
 public class Company {
