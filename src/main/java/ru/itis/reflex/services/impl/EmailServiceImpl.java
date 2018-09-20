@@ -36,7 +36,7 @@ public class EmailServiceImpl implements EmailService {
             MimeMessagePreparator messagePreparator = mimeMessage -> {
 
                 MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-                messageHelper.setFrom("itisspring2018@gmail.com");
+                messageHelper.setFrom("ReFlex");
                 messageHelper.setTo(email);
                 messageHelper.setSubject("Регистрация");
                 messageHelper.setText("Ваш код регистрации: " + key.getValue(), true);

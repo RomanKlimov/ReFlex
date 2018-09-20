@@ -8,6 +8,7 @@ import ru.itis.reflex.models.User;
 import ru.itis.reflex.security.Role.Role;
 import ru.itis.reflex.services.interfaces.AuthService;
 import ru.itis.reflex.services.interfaces.CompanyService;
+import ru.itis.reflex.services.interfaces.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +21,9 @@ public class AuthController {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/signIn")
     public String root(HttpServletRequest request, Authentication authentication){
         if (authentication != null){
@@ -27,8 +31,11 @@ public class AuthController {
             request.getSession().setAttribute("user", user);
             if (user.getRole().equals(Role.ADMIN)){
                 String companyName = companyService.getCompanyByHead(user).getName();
-
                 return "redirect:/"+companyName+"/admin";
+            }
+            if (user.getRole().equals(Role.BOSS)) {
+                String companyName = user.getCompany().getName();
+                return "redirect:/"+companyName+"/boss";
             }
         }
         return "redirect:/index";

@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

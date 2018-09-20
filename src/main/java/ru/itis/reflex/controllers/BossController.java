@@ -20,7 +20,7 @@ import ru.itis.reflex.services.interfaces.KeyService;
 import java.util.List;
 
 @Controller
-public class AdminController {
+public class BossController {
 
     @Autowired
     private AuthService authService;
@@ -34,17 +34,17 @@ public class AdminController {
     @Autowired
     private EmailService emailService;
 
-    @GetMapping("/{company}/admin")
+    @GetMapping("/{company}/boss")
     public String apply(@PathVariable("company") String company, Authentication authentication, ModelMap modelMap){
         User user = authService.getUserByAuthentication(authentication);
         Company companyByName = companyService.getCompanyByName(company);
         modelMap.addAttribute("user", user);
         modelMap.addAttribute("company", companyByName);
 
-        return "admin";
+        return "boss";
     }
 
-    @PostMapping("/keyAdmin")
+    @PostMapping("/keyBoss")
     public String sendBossInvite(@RequestParam("emails") String emails, ModelMap modelMap, Authentication authentication) {
         User user = authService.getUserByAuthentication(authentication);
         keyService.addKeys(emails, user);
@@ -53,8 +53,7 @@ public class AdminController {
         List<Key> keys = keyService.getAllByHead(user);
         modelMap.addAttribute("keys", keys);
 
-        return "admin";
+        return "boss";
     }
-
 
 }

@@ -6,11 +6,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.reflex.exceptions.EmailExistsException;
 import ru.itis.reflex.forms.AdminRegistrationForm;
+import ru.itis.reflex.forms.BossRegistrationForm;
+import ru.itis.reflex.models.Key;
 import ru.itis.reflex.models.User;
 import ru.itis.reflex.repositories.UserRepository;
 import ru.itis.reflex.security.Role.Role;
 import ru.itis.reflex.security.webConfig.WebSecurityConfig;
 import ru.itis.reflex.services.interfaces.CompanyService;
+import ru.itis.reflex.services.interfaces.DepartmentService;
+import ru.itis.reflex.services.interfaces.KeyService;
 import ru.itis.reflex.services.interfaces.RegistrationSevice;
 
 
@@ -26,6 +30,12 @@ public class RegistrationServiceImpl implements RegistrationSevice {
     @Autowired
     private WebSecurityConfig webSecurityConfig;
 
+    @Autowired
+    private KeyService keyService;
+
+    @Autowired
+    private DepartmentService departmentService;
+
     @Override
     public void createAdminAccount(AdminRegistrationForm adminRegistrationForm) throws EmailExistsException {
         if (!userRepository.findOneByEmail(adminRegistrationForm.getEmail()).isPresent()){
@@ -39,4 +49,23 @@ public class RegistrationServiceImpl implements RegistrationSevice {
             userRepository.save(user);
         } else throw new EmailExistsException("Аккаунт с такой почтой уже зарегистрирован: " + adminRegistrationForm.getEmail());
     }
+
+    @Override
+    public void createBossAccount(BossRegistrationForm bossRegistrationForm) {
+        if (!userRepository.findOneByEmail(bossRegistrationForm.getEmail()).isPresent()) {
+            Key key = keyService.getKeyByValue(bossRegistrationForm.getKey());
+            if (key.getEmail().equals(bossRegistrationForm.getEmail())){
+                User user = User.builder()
+                        .name(bossRegistrationForm.getName())
+                        .email(bossRegistrationForm.getEmail())
+                        .password(webSecurityConfig.passwordEncoder().encode(bossRegistrationForm.getPassword()))
+                        .department(departmentService.getDepatmentByName(bossRegistrationForm.getDepartment()))
+                        .company(key.getHead().getCompany())
+                        .role(Role.BOSS)
+                        .build();
+                userRepository.save(user);
+
+            }
+        }
     }
+}

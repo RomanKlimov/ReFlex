@@ -69,4 +69,9 @@ public class KeyServiceImpl implements KeyService {
     public Key getKeyByEmail(String email) {
         return keyRepository.getByEmail(email);
     }
+
+    @Override
+    public Key getKeyByValue(String value) {
+        return keyRepository.getByValue(value);
+    }
 }

@@ -11,4 +11,5 @@ public interface KeyService {
     List<Key> getAllByHead(User user);
     List<Key> getKeysByEmails(String emails);
     Key getKeyByEmail(String email);
+    Key getKeyByValue(String value);
 }

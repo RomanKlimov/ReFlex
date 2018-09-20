@@ -28,10 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/home").permitAll()
                 .antMatchers("/index").permitAll()
-                .antMatchers("/search").permitAll()
-                .antMatchers("/user").permitAll()
-                .antMatchers("/teams").permitAll()
-                .antMatchers("/meetups").permitAll()
+                .antMatchers("/{\\w+}/boss").hasAuthority("BOSS")
+
                 .antMatchers("/contacts").permitAll()
                 .antMatchers("/confirmRegistration").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
