@@ -3,33 +3,30 @@ package ru.itis.reflex.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString
+@ToString(exclude = {"head"})
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "posture_data")
-public class PostureData {
+@Table(name = "key")
+public class Key {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "num_of_photos")
-    private int photosNum;
+    @Column(unique = true)
+    private String value;
 
-    @Column(name = "flex_num")
-    private int flexNum;
+    @Column(unique = true)
+    private String email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
-
-    @Column
-    private Date date;
+    private User head;
 
 }

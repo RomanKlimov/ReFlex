@@ -1,14 +1,17 @@
 package ru.itis.reflex.models;
 
 import lombok.*;
+import ru.itis.reflex.security.Role.Role;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "\"user\"")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ToString
 @EqualsAndHashCode
@@ -24,11 +27,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
-    @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -37,5 +40,10 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "head")
+    private List<Key> keys;
 
 }

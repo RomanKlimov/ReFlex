@@ -1,9 +1,6 @@
 package ru.itis.reflex.models;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,6 +10,8 @@ import java.util.Date;
 @EqualsAndHashCode
 @ToString
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "mood_data")
 public class MoodData {
 
