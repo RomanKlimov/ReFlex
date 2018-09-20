@@ -29,6 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/home").permitAll()
                 .antMatchers("/index").permitAll()
                 .antMatchers("/{\\w+}/boss").hasAuthority("BOSS")
+                .antMatchers("/{\\w+}/{\\w+}/user").hasAuthority("USER")
+                .antMatchers("/{\\w+}/{\\w+}/signUp").permitAll()
 
                 .antMatchers("/contacts").permitAll()
                 .antMatchers("/confirmRegistration").permitAll()

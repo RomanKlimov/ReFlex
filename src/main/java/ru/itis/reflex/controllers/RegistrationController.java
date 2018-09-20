@@ -62,7 +62,6 @@ public class RegistrationController {
         }
         model.addAttribute("company", company);
 
-
         return "signUpBoss";
     }
 
@@ -82,6 +81,33 @@ public class RegistrationController {
 
         return "redirect:/login";
     }
+
+    @GetMapping("/{company}/{department}/signUp")
+    public String  signUpUser(@PathVariable("company") String company, Model model, @PathVariable("department") String department){
+        if (!model.containsAttribute("userRegistrationForm")){
+            model.addAttribute("userRegistrationForm", new UserRegistrationForm());
+        }
+        model.addAttribute("company", company);
+        model.addAttribute("department", department);
+
+        return "signUpUser";
+    }
+
+    @PostMapping("/signUpUser")
+    public String registerUserAccount(UserRegistrationForm userRegistrationForm,
+                                      BindingResult result, RedirectAttributes attributes) throws InterruptedException, IOException, EmailExistsException, CompanyExistsException {
+        if (result.hasErrors()){
+            attributes.addFlashAttribute("userRegistrationForm", userRegistrationForm);
+            attributes.addFlashAttribute("error" , result.getAllErrors().get(0).getDefaultMessage());
+            return "redirect:/signUpUser";
+        }
+
+        registrationService.createUserAccount(userRegistrationForm);
+
+        return "redirect:/login";
+    }
+
+
 
 
 

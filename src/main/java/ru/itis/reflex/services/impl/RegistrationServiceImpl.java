@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.itis.reflex.exceptions.EmailExistsException;
 import ru.itis.reflex.forms.AdminRegistrationForm;
 import ru.itis.reflex.forms.BossRegistrationForm;
+import ru.itis.reflex.forms.UserRegistrationForm;
 import ru.itis.reflex.models.Key;
 import ru.itis.reflex.models.User;
 import ru.itis.reflex.repositories.UserRepository;
@@ -62,6 +63,25 @@ public class RegistrationServiceImpl implements RegistrationSevice {
                         .department(departmentService.getDepatmentByName(bossRegistrationForm.getDepartment()))
                         .company(key.getHead().getCompany())
                         .role(Role.BOSS)
+                        .build();
+                userRepository.save(user);
+
+            }
+        }
+    }
+
+    @Override
+    public void createUserAccount(UserRegistrationForm userRegistrationForm) {
+        if (!userRepository.findOneByEmail(userRegistrationForm.getEmail()).isPresent()) {
+            Key key = keyService.getKeyByValue(userRegistrationForm.getKey());
+            if (key.getEmail().equals(userRegistrationForm.getEmail())){
+                User user = User.builder()
+                        .name(userRegistrationForm.getName())
+                        .email(userRegistrationForm.getEmail())
+                        .password(webSecurityConfig.passwordEncoder().encode(userRegistrationForm.getPassword()))
+                        .department(key.getHead().getDepartment())
+                        .company(key.getHead().getCompany())
+                        .role(Role.USER)
                         .build();
                 userRepository.save(user);
 

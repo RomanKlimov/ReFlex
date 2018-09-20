@@ -26,6 +26,7 @@ public class AuthController {
 
     @GetMapping("/signIn")
     public String root(HttpServletRequest request, Authentication authentication){
+        //TODO switchcase
         if (authentication != null){
             User user = authService.getUserByAuthentication(authentication);
             request.getSession().setAttribute("user", user);
@@ -36,6 +37,11 @@ public class AuthController {
             if (user.getRole().equals(Role.BOSS)) {
                 String companyName = user.getCompany().getName();
                 return "redirect:/"+companyName+"/boss";
+            }
+            if (user.getRole().equals(Role.USER)) {
+                String companyName = user.getCompany().getName();
+                String departmentName = user.getDepartment().getName();
+                return "redirect:/"+companyName+"/" + departmentName + "/user";
             }
         }
         return "redirect:/index";
