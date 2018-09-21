@@ -17,6 +17,10 @@ public class GraphsTestDataGenerator {
             + "VALUES (?,?,\'password\',\'USER\',\'Some Name\',?,?);";
     private static final String MOOD_INSERT_SQL = "INSERT INTO mood_data (morning_val,evening_val,user_id,date) "
             + "VALUES (?,?,?,?);";
+    private static final String TIREDNESS_INSERT_SQL = "INSERT INTO tiredness_data (morning_val,evening_val,user_id,date) "
+            + "VALUES (?,?,?,?);";
+    private static final String POSTURE_INSERT_SQL = "INSERT INTO posture_data (smooth_num,flex_num,user_id,date) "
+            + "VALUES (?,?,?,?);";
 
     private static Connection c = null;
     private static PreparedStatement stmt = null;
@@ -42,6 +46,8 @@ public class GraphsTestDataGenerator {
 
                 for (Date date: dates){
                     addMoodData(i, date);
+                    addTirednessData(i, date);
+                    addPostureData(i, date);
                 }
             }
 
@@ -88,14 +94,35 @@ public class GraphsTestDataGenerator {
     private static void addMoodData(int userId, Date date) throws SQLException {
         stmt = c.prepareStatement(MOOD_INSERT_SQL);
 
-        stmt.setInt(1, (int) Math.round(random.nextGaussian() * 10 + 5));
-        stmt.setInt(2, (int) Math.round(random.nextGaussian() * 10 + 5));
+        stmt.setInt(1, random.nextInt(10));
+        stmt.setInt(2, random.nextInt(10));
         stmt.setInt(3, userId);
         stmt.setDate(4, date);
 
         stmt.executeUpdate();
     }
 
+    private static void addTirednessData(int userId, Date date) throws SQLException {
+        stmt = c.prepareStatement(TIREDNESS_INSERT_SQL);
+
+        stmt.setInt(1, random.nextInt(10));
+        stmt.setInt(2, random.nextInt(10));
+        stmt.setInt(3, userId);
+        stmt.setDate(4, date);
+
+        stmt.executeUpdate();
+    }
+
+    private static void addPostureData(int userId, Date date) throws SQLException {
+        stmt = c.prepareStatement(POSTURE_INSERT_SQL);
+
+        stmt.setInt(1, random.nextInt(400) + 1500);
+        stmt.setInt(2, random.nextInt(400) + 500);
+        stmt.setInt(3, userId);
+        stmt.setDate(4, date);
+
+        stmt.executeUpdate();
+    }
 
     private static List<Date> createDateRange(int days_num){
 
