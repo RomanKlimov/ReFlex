@@ -21,6 +21,13 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addForeignKeyConstraint baseTableName="tiredness_data"
+                                 baseColumnNames="user_id"
+                                 constraintName="user_id_fk"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"/>
 
         <createTable tableName="mood_data">
             <column name="id" type="int" autoIncrement="true">
@@ -36,7 +43,13 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
+        <addForeignKeyConstraint baseTableName="mood_data"
+                                 baseColumnNames="user_id"
+                                 constraintName="user_id_fk"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"/>
 
         <createTable tableName="posture_data">
             <column name="id" type="int" autoIncrement="true">
@@ -52,6 +65,13 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addForeignKeyConstraint baseTableName="posture_data"
+                                 baseColumnNames="user_id"
+                                 constraintName="user_id_fk"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"/>
     </changeSet>
 
 </databaseChangeLog>

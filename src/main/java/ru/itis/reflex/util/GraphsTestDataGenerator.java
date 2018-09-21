@@ -32,15 +32,22 @@ public class GraphsTestDataGenerator {
 
             Class.forName("org.postgresql.Driver");
             c = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/ReFlex",
+                    .getConnection("jdbc:postgresql://localhost:5432/reflex",
                             "postgres", "postgres");
             c.setAutoCommit(false);
             System.out.println("Opened database successfully");
 
-            addCompany();
+//            addCompany();
 
-            List<Date> dates = createDateRange(50);
+            List<Date> dates = createDateRange(400);
 
+            for (Date date: dates){
+                addMoodData(4, date);
+                addTirednessData(4, date);
+                addPostureData(4, date);
+            }
+
+/*
             for (int i=100; i<150; i++){
                 addUser(i, "email"+i+"@gmail.com", 1, 100);
 
@@ -50,7 +57,7 @@ public class GraphsTestDataGenerator {
                     addPostureData(i, date);
                 }
             }
-
+*/
             stmt.close();
             c.commit();
             c.close();
@@ -94,8 +101,8 @@ public class GraphsTestDataGenerator {
     private static void addMoodData(int userId, Date date) throws SQLException {
         stmt = c.prepareStatement(MOOD_INSERT_SQL);
 
-        stmt.setInt(1, random.nextInt(10));
-        stmt.setInt(2, random.nextInt(10));
+        stmt.setInt(1, randomValue(10));
+        stmt.setInt(2, randomValue(10));
         stmt.setInt(3, userId);
         stmt.setDate(4, date);
 
@@ -105,8 +112,8 @@ public class GraphsTestDataGenerator {
     private static void addTirednessData(int userId, Date date) throws SQLException {
         stmt = c.prepareStatement(TIREDNESS_INSERT_SQL);
 
-        stmt.setInt(1, random.nextInt(10));
-        stmt.setInt(2, random.nextInt(10));
+        stmt.setInt(1, randomValue(10));
+        stmt.setInt(2, randomValue(10));
         stmt.setInt(3, userId);
         stmt.setDate(4, date);
 
@@ -116,8 +123,8 @@ public class GraphsTestDataGenerator {
     private static void addPostureData(int userId, Date date) throws SQLException {
         stmt = c.prepareStatement(POSTURE_INSERT_SQL);
 
-        stmt.setInt(1, random.nextInt(400) + 1500);
-        stmt.setInt(2, random.nextInt(400) + 500);
+        stmt.setInt(1, randomValue(2000));
+        stmt.setInt(2, randomValue(500));
         stmt.setInt(3, userId);
         stmt.setDate(4, date);
 
@@ -137,6 +144,18 @@ public class GraphsTestDataGenerator {
             localDate = localDate.plusDays( 1 );
         }
         return  dates;
+    }
+
+
+    private static int randomValue(int max){
+        int randValue = (int) (random.nextGaussian() * (max/4) + (max/2));
+        if (randValue > max) {
+            randValue = max;
+        }
+        else if (randValue < 0) {
+            randValue = 0;
+        }
+        return randValue;
     }
 
 }

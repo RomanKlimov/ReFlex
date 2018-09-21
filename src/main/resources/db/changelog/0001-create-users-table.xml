@@ -14,7 +14,9 @@
             <column name="name" type="varchar(50)">
                 <constraints  unique="true" nullable="false" />
             </column>
-            <column name="head_id" type="int"/>
+            <column name="head_id" type="int">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
 
@@ -28,11 +30,20 @@
                 <constraints  unique="true" nullable="false" />
             </column>
             <column name="company_id" type="int">
-                <constraints nullable="false"
-                             foreignKeyName="fk_company_id" referencedTableName="company" referencedColumnNames="id" />
+                <constraints nullable="false"/>
             </column>
-            <column name="head_id" type="int"/>
+            <column name="head_id" type="int">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
+
+        <addForeignKeyConstraint baseTableName="department"
+                                 baseColumnNames="company_id"
+                                 constraintName="fk_company_id"
+                                 referencedTableName="company"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"/>
     </changeSet>
 
     <changeSet id="03" author="svintenok">
@@ -54,12 +65,26 @@
                 <constraints nullable="false" />
             </column>
             <column name="department_id" type="int">
-                <constraints foreignKeyName="fk_department_id" referencedTableName="department" referencedColumnNames="id" />
+                <constraints nullable="true" />
             </column>
             <column name="company_id" type="int">
-                <constraints foreignKeyName="fk_company_id" referencedTableName="company" referencedColumnNames="id" />
             </column>
         </createTable>
+
+        <addForeignKeyConstraint baseTableName="user"
+                                 baseColumnNames="company_id"
+                                 constraintName="fk_company_id"
+                                 referencedTableName="company"
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"
+                                 onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="user"
+                                 baseColumnNames="department_id"
+                                 constraintName="fk_department_id"
+                                 referencedTableName="department"
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"
+                                 onUpdate="NO ACTION"/>
     </changeSet>
 
     <changeSet id="04" author="svintenok">
@@ -67,12 +92,16 @@
                                  baseColumnNames="head_id"
                                  constraintName="depart_head_id_fk"
                                  referencedTableName="user"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"
+                                 onUpdate="NO ACTION"/>
         <addForeignKeyConstraint baseTableName="company"
                                  baseColumnNames="head_id"
                                  constraintName="company_head_id_fk"
                                  referencedTableName="user"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"
+                                 onUpdate="NO ACTION"/>
     </changeSet>
 
 </databaseChangeLog>

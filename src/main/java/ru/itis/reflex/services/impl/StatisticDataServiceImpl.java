@@ -34,22 +34,30 @@ public class StatisticDataServiceImpl implements StatisticDataService{
     }
 
     @Override
-    public List<MoodData> getUserMoodData(User user) {
-        Date beginDate = Date.valueOf(LocalDate.now().minusDays(30));
-        return moodDataRepository.findAllByUserAndDateAfter(user, beginDate);
+    public List<MoodData> getUserMoodData(User user, String timePeriod) {
+        return moodDataRepository.findAllByUserAndDateAfter(user, getBeginDate(timePeriod));
     }
 
     @Override
-    public List<TirednessData> getUserTirednessData(User user) {
-        Date beginDate = Date.valueOf(LocalDate.now().minusDays(30));
-        return tirednessDataRepository.findAllByUserAndDateAfter(user, beginDate);
+    public List<TirednessData> getUserTirednessData(User user, String timePeriod) {
+        return tirednessDataRepository.findAllByUserAndDateAfter(user, getBeginDate(timePeriod));
     }
 
     @Override
-    public List<PostureData> getUserPostureData(User user) {
-        Date beginDate = Date.valueOf(LocalDate.now().minusDays(30));
-        return postureDataRepository.findAllByUserAndDateAfter(user, beginDate);
+    public List<PostureData> getUserPostureData(User user, String timePeriod) {
+        return postureDataRepository.findAllByUserAndDateAfter(user, getBeginDate(timePeriod));
     }
 
+    private Date getBeginDate(String timePeriod){
+        if (timePeriod.equals("Year")){
+            return Date.valueOf(LocalDate.now().minusYears(1));
+        }
+        else if (timePeriod.equals("Quarter")){
+            return Date.valueOf(LocalDate.now().minusMonths(3));
+        }
+        else {
+            return Date.valueOf(LocalDate.now().minusMonths(1));
+        }
+    }
 
 }

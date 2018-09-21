@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class ChartType {
     private String dataType;
+    private String timeType;
 }

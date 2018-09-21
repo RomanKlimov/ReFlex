@@ -24,6 +24,17 @@
             <input type="radio" name="chartData" value="Posture" autocomplete="on"> Posture
         </label>
     </div>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-light active">
+            <input type="radio" name="chartTime" value="Month" autocomplete="on" checked> Month
+        </label>
+        <label class="btn btn-light">
+            <input type="radio" name="chartTime" value="Quarter" autocomplete="on"> Quarter
+        </label>
+        <label class="btn btn-light">
+            <input type="radio" name="chartTime" value="Year" autocomplete="on"> Year
+        </label>
+    </div>
     <canvas id="statsChart"></canvas>
 
 </div>
@@ -73,6 +84,9 @@
                     type: 'time',
                     time: {
                         unit: 'day'
+                    },
+                    ticks:{
+                        source: 'auto'
                     }
                 }],
                 yAxes: [{
@@ -116,6 +130,7 @@
 
         var chart_request = {};
         chart_request["dataType"] = $('input[name=chartData]:checked').val();
+        chart_request["timeType"] = $('input[name=chartTime]:checked').val();
         console.log(chart_request);
 
         $.ajax({
@@ -139,6 +154,14 @@
                // statsChart.data.labels = labels;
 
                 config.options.title.text = chart_request["dataType"] + " statistics";
+                if (chart_request["timeType"] === "Year") {
+                    config.options.scales.xAxes[0].time.unit = 'month';
+                    config.options.scales.xAxes[0].scaleLabel.labelString = 'Month';
+                }
+                else {
+                    config.options.scales.xAxes[0].time.unit = 'day';
+                    config.options.scales.xAxes[0].scaleLabel.labelString = 'Day';
+                }
 
                 if (chart_request["dataType"] === 'Posture'){
                     config.data.datasets = dataset2;
@@ -167,6 +190,10 @@
         ajax_submit();
 
         $('input[name=chartData]').change(function () {
+            ajax_submit();
+        });
+
+        $('input[name=chartTime]').change(function () {
             ajax_submit();
         });
     });

@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface PostureDataRepository extends JpaRepository<PostureData, Integer> {
     List<PostureData> findAllByUserAndDateAfter(User user, Date date);
+    List<PostureData> findAllByUser(User user);
 }

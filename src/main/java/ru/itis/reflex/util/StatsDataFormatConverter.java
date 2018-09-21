@@ -76,7 +76,7 @@ public class StatsDataFormatConverter {
             if (postureData.getSmoothNum() != 0) {
 
                 pointData.add(new GraphPointData(
-                        Math.round((float) postureData.getFlexNum() * 100/ (postureData.getFlexNum() + postureData.getSmoothNum())),
+                        Math.round( (float)postureData.getSmoothNum()*100/(postureData.getFlexNum()+postureData.getSmoothNum())),
                         sdf.format(postureData.getDate())
                 ));
             }
