@@ -12,7 +12,9 @@ client supports video/camera, but for the sake of illustrating the
 elements involved, they are created with markup (not JavaScript)
 -->
     <video id="video" width="640" height="480" autoplay></video>
-    <button id="snap">Snap Photo</button>
+    <button id="initialize">Initialize</button>
+    <button id="update">Update</button>
+    <button id="delete_user_session">Delete user session</button>
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
         // Grab elements, create settings, etc.
@@ -37,27 +39,34 @@ elements involved, they are created with markup (not JavaScript)
             var jpegUrl = jpegUrl0.replace(/^data:image\/(png|jpeg);base64,/, "");
             return jpegUrl;
         }
-        var myFormData = new FormData();
+
 
         // Trigger photo take
-        document.getElementById("snap").addEventListener("click", function() {
+        document.getElementById("initialize").addEventListener("click", function() {
+            var myFormData = new FormData();
             context.drawImage(video, 0, 0, 640, 480);
             jpegURL = convertCanvasToImage(canvas);
             var myBlob = base64ToBlob(jpegURL, 'image/jpeg');
 
-            // var byteCharacters = atob(jpegURL);
-            // var byteNumbers = new Array(byteCharacters.length);
-            // for (var i = 0; i < byteCharacters.length; i++) {
-            //     byteNumbers[i] = byteCharacters.charCodeAt(i);
-            // }
-            // var byteArray = new Uint8Array(byteNumbers);
-            // var blob = new Blob([byteArray], {type: contentType});
+            myFormData.append('myImage', myBlob);
+
+            initialize(myFormData);
+        });
+
+        document.getElementById("delete_user_session").addEventListener("click", function() {
+            end_user_session();
+        });
 
 
+        document.getElementById("update").addEventListener("click", function() {
+            var myFormData = new FormData();
+            context.drawImage(video, 0, 0, 640, 480);
+            jpegURL = convertCanvasToImage(canvas);
+            var myBlob = base64ToBlob(jpegURL, 'image/jpeg');
 
             myFormData.append('myImage', myBlob);
 
-            uploadFile(myFormData);
+            update(myFormData);
         });
 
         // This function is used to convert base64 encoding to mime type (blob)
@@ -84,9 +93,9 @@ elements involved, they are created with markup (not JavaScript)
             return new Blob(byteArrays, {type: mime});
         }
 
-        function uploadFile(myFormData) {
+        function initialize(myFormData) {
             $.ajax({
-                url: "/",
+                url: "/initialize_fp",
                 type: "POST",
                 data: myFormData,
                 // enctype: 'multipart/form-data',
@@ -103,6 +112,45 @@ elements involved, they are created with markup (not JavaScript)
                 }
             });
         } // function uploadFile
+
+        function update(myFormData) {
+            $.ajax({
+                url: "/update_fp",
+                type: "POST",
+                data: myFormData,
+                // enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    // Handle upload success
+                    alert("File succesfully uploaded");
+                },
+                error: function () {
+                    // Handle upload error
+                    alert("File not uploaded ");
+                }
+            });
+        }
+
+        function end_user_session() {
+            $.ajax({
+                url: "/update_fp",
+                type: "GET",
+                // enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    // Handle upload success
+                    alert("Users cache deleted");
+                },
+                error: function () {
+                    // Handle upload error
+                    alert("Error ");
+                }
+            });
+        }
 
     </script>
     </body>

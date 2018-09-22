@@ -40,12 +40,14 @@ public class FPCacheServiceImpl implements FPCacheService {
         } else {
             usersFaceInfo.put(user, new FPInfo(fPInfo.getLowerPoint(), fPInfo.getWHSum()));
         }
+        System.out.println("init = " + usersFaceInfo.get(user));
         return usersFaceInfo.get(user);
     }
 
     @Override
     public FPInfo updateFP(User user, boolean isInsidePhoto, boolean isFlexing) {
         FPInfo fpInfo = usersFaceInfo.get(user);
+        System.out.println("updateFP in cache: before update " + usersFaceInfo.get(user));
         fpInfo.setLastTimeActivity(System.currentTimeMillis());
         if (isInsidePhoto) {
             //TODO УБРАТЬ ХАРДКОД
@@ -62,6 +64,7 @@ public class FPCacheServiceImpl implements FPCacheService {
         } else {
             fpInfo.incNOfEmptyPhotosInARow();
         }
+        System.out.println("updateFP in cache: after update " + usersFaceInfo.get(user));
         return fpInfo;
     }
 
@@ -150,6 +153,11 @@ public class FPCacheServiceImpl implements FPCacheService {
     private void resetDataForDB(User user) {
         usersFaceInfo.get(user).setTotalNOfBadPositions(0);
         usersFaceInfo.get(user).setTotalNOfPositions(0);
+    }
+
+    @Override
+    public String toString(){
+        return usersFaceInfo.toString();
     }
 
 }

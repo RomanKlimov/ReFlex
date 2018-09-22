@@ -6,7 +6,6 @@ public interface FPAnalyzerService {
 
     void update(User user, byte[] userPhotoBytes);
 
-
     //TODO БУЛЕАН
     void initialize(User user, byte[] userPhotoBytes);
 

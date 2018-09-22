@@ -44,6 +44,7 @@ public class FPInfo {
 
     public void incNOfBadPositionsInARow() {
         this.nOfBadPositionsInARow++;
+        this.totalNOfBadPositions++;
         this.totalNOfPositions++;
     }
 
@@ -120,5 +121,18 @@ public class FPInfo {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "FPInfo{" +
+                "lowerPoint=" + lowerPoint +
+                ", lHSum=" + lHSum +
+                ", nOfBadPositionsInARow=" + nOfBadPositionsInARow +
+                ", totalNOfPositions=" + totalNOfPositions +
+                ", totalNOfBadPositions=" + totalNOfBadPositions +
+                ", sittingStartTime=" + sittingStartTime +
+                ", nOfEmptyPhotosInARow=" + nOfEmptyPhotosInARow +
+                ", lastTimeActivity=" + lastTimeActivity +
+                ", startOfFollowing=" + startOfFollowing +
+                '}';
+    }
 }
