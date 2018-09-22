@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface TirednessDataRepository extends JpaRepository<TirednessData, Integer> {
     List<TirednessData> findAllByUserAndDateAfter(User user, Date date);
+    TirednessData findFirstByUserOrderByDateDesc(User user);
 }

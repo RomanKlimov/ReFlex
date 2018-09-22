@@ -56,7 +56,6 @@ elements involved, they are created with markup (not JavaScript)
 
 
             myFormData.append('myImage', myBlob);
-
             uploadFile(myFormData);
         });
 

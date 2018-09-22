@@ -10,6 +10,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 @Entity
 @Table(name = "tiredness_data")
