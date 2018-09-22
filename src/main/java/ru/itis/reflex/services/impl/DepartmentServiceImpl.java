@@ -41,14 +41,19 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void addDepartmentHead(String department, String email) {
-        Department depatmentByName = getDepatmentByName(department);
+        Department depatmentByName = getDepartmentByName(department);
         User user = userService.getUser(email);
         depatmentByName.setHead(user);
         departmentRepository.save(depatmentByName);
     }
 
     @Override
-    public Department getDepatmentByName(String name) {
+    public Department getDepartmentByName(String name) {
         return departmentRepository.getByName(name);
+    }
+
+    @Override
+    public Department getDepartment(Integer id) {
+        return departmentRepository.getById(new Long(id));
     }
 }

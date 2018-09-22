@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.itis.reflex.models.MoodData;
 import ru.itis.reflex.models.User;
 import ru.itis.reflex.repositories.MoodDataRepository;
-import ru.itis.reflex.repositories.UserRepository;
+
 import ru.itis.reflex.services.interfaces.MoodDataService;
 
 import java.sql.Date;

@@ -2,14 +2,13 @@ package ru.itis.reflex.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.itis.reflex.models.MoodData;
-import ru.itis.reflex.models.PostureData;
-import ru.itis.reflex.models.TirednessData;
-import ru.itis.reflex.models.User;
+import ru.itis.reflex.models.*;
 import ru.itis.reflex.repositories.MoodDataRepository;
 import ru.itis.reflex.repositories.PostureDataRepository;
 import ru.itis.reflex.repositories.TirednessDataRepository;
 import ru.itis.reflex.services.interfaces.StatisticDataService;
+import ru.itis.reflex.util.AggregateResult;
+import ru.itis.reflex.util.PostureAggregateResult;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -48,15 +47,30 @@ public class StatisticDataServiceImpl implements StatisticDataService{
         return postureDataRepository.findAllByUserAndDateAfter(user, getBeginDate(timePeriod));
     }
 
+    @Override
+    public List<AggregateResult> getAvgMoodData(Department department, String timePeriod) {
+        return moodDataRepository.findAvgMoodByDepartment(department, getBeginDate(timePeriod));
+    }
+
+    @Override
+    public List<AggregateResult> getAvgTirednessData(Department department, String timePeriod) {
+        return tirednessDataRepository.findAvgTirednessByDepartment(department, getBeginDate(timePeriod));
+    }
+
+    @Override
+    public List<PostureAggregateResult> getAvgPostureData(Department department, String timePeriod) {
+        return postureDataRepository.findAvgPostureByDepartment(department, getBeginDate(timePeriod));
+    }
+
     private Date getBeginDate(String timePeriod){
         if (timePeriod.equals("Year")){
             return Date.valueOf(LocalDate.now().minusYears(1));
         }
-        else if (timePeriod.equals("Quarter")){
-            return Date.valueOf(LocalDate.now().minusMonths(3));
+        else if (timePeriod.equals("Month")){
+            return Date.valueOf(LocalDate.now().minusMonths(1));
         }
         else {
-            return Date.valueOf(LocalDate.now().minusMonths(1));
+            return Date.valueOf(LocalDate.now().minusWeeks(1));
         }
     }
 

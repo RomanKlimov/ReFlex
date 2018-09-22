@@ -1,8 +1,12 @@
 package ru.itis.reflex.models;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,5 +29,9 @@ public class Company {
     @OneToOne
     @JoinColumn(name = "head_id")
     private User head;
+
+    @OneToMany(mappedBy = "company", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Department> departments = new ArrayList<>();
 
 }

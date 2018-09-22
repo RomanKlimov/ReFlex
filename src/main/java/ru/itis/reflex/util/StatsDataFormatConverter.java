@@ -87,4 +87,49 @@ public class StatsDataFormatConverter {
 
         return j;
     }
+
+    public static JSONObject convertAvgToChartDataFormat(List<AggregateResult> avgMoodData) {
+        List<GraphPointData> morningPointData = new ArrayList<>();
+        List<GraphPointData> eveningPointData = new ArrayList<>();
+
+        for (AggregateResult aggregateResult: avgMoodData) {
+
+            morningPointData.add(new GraphPointData(
+                    (int) Math.round(aggregateResult.getMorningValue()),
+                    sdf.format(aggregateResult.getDate())
+            ));
+
+            eveningPointData.add(new GraphPointData(
+                    (int) Math.round(aggregateResult.getEveningValue()),
+                    sdf.format(aggregateResult.getDate())
+            ));
+        }
+
+        JSONObject j = new JSONObject();
+        j.put("morningData", morningPointData);
+        j.put("eveningData", eveningPointData);
+
+        return j;
+    }
+
+    public static JSONObject convertPostureAvgToChartDataFormat(List<PostureAggregateResult> avgPostureData) {
+
+        List<GraphPointData> pointData = new ArrayList<>();
+
+
+        for (PostureAggregateResult aggregateResult: avgPostureData) {
+
+            if (aggregateResult.getSmoothNum() != 0) {
+
+                pointData.add(new GraphPointData(
+                        (int) Math.round( (float)aggregateResult.getSmoothNum()*100/(aggregateResult.getFlexNum()+aggregateResult.getSmoothNum())),
+                        sdf.format(aggregateResult.getDate())
+                ));
+            }
+        }
+
+        JSONObject j = new JSONObject();
+        j.put("pointData", pointData);
+        return j;
+    }
 }

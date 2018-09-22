@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itis.reflex.models.ChartType;
+import ru.itis.reflex.models.CompanyStatsChartType;
+import ru.itis.reflex.models.Department;
 import ru.itis.reflex.models.User;
-import ru.itis.reflex.services.interfaces.AuthService;
-import ru.itis.reflex.services.interfaces.StatisticDataService;
-import ru.itis.reflex.services.interfaces.UserService;
+import ru.itis.reflex.services.interfaces.*;
 import ru.itis.reflex.util.StatsDataFormatConverter;
 
 
@@ -22,20 +22,25 @@ public class GraphDataController {
     private final StatisticDataService statisticDataService;
     private final UserService userService;
     private final AuthService authService;
+    private final DepartmentService departmentService;
 
     @Autowired
-    public GraphDataController(StatisticDataService statisticDataService, UserService userService, AuthService authService) {
+    public GraphDataController(StatisticDataService statisticDataService,
+                               UserService userService,
+                               AuthService authService,
+                               DepartmentService departmentService) {
         this.statisticDataService = statisticDataService;
         this.userService = userService;
         this.authService = authService;
+        this.departmentService = departmentService;
     }
 
     @ResponseBody
-    @PostMapping("/stats_data_ajax")
-    public ResponseEntity<?> getDataViaAjax(@RequestBody ChartType chartType, Authentication authentication) {
+    @PostMapping("/user_stats_ajax")
+    public ResponseEntity<?> getUserDataViaAjax(@RequestBody ChartType chartType, Authentication authentication) {
 
-        //User currentUser = userService.getUser(new Long(4)); // for test
-        User currentUser = authService.getUserByAuthentication(authentication);
+        User currentUser = userService.getUser(new Long(4)); // for test
+        //User currentUser = authService.getUserByAuthentication(authentication);
 
         JSONObject jsonData;
 
@@ -51,6 +56,34 @@ public class GraphDataController {
             jsonData = StatsDataFormatConverter.convertMoodToChartDataFormat(
                     statisticDataService.getUserMoodData(currentUser, chartType.getTimeType()));
         }
+
+        return ResponseEntity.ok(jsonData.toString());
+    }
+
+
+    @ResponseBody
+    @PostMapping("/company_stats_ajax")
+    public ResponseEntity<?> getCompanyDataViaAjax(@RequestBody CompanyStatsChartType chartType, Authentication authentication) {
+
+        //User currentUser = userService.getUser(new Long(4)); // for test
+        //User currentUser = authService.getUserByAuthentication(authentication);
+        Department department = departmentService.getDepartment(chartType.getDepartmentId()); //for test
+
+        JSONObject jsonData;
+
+        if (chartType.getDataType().equals("Tiredness")) {
+            jsonData = StatsDataFormatConverter.convertAvgToChartDataFormat(
+                    statisticDataService.getAvgTirednessData(department, chartType.getTimeType()));
+
+        } else if (chartType.getDataType().equals("Posture")) {
+            jsonData = StatsDataFormatConverter.convertPostureAvgToChartDataFormat(
+               statisticDataService.getAvgPostureData(department, chartType.getTimeType()));
+        }
+        else {
+            jsonData = StatsDataFormatConverter.convertAvgToChartDataFormat(
+                    statisticDataService.getAvgMoodData(department, chartType.getTimeType()));
+        }
+
 
         return ResponseEntity.ok(jsonData.toString());
     }

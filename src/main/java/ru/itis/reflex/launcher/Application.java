@@ -12,7 +12,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = {"ru.itis.reflex.models"})
 @EnableJpaRepositories(basePackages = {"ru.itis.reflex.repositories"})
 public class Application {
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
+
 }

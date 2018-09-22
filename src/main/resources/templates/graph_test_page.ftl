@@ -26,15 +26,24 @@
     </div>
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-light active">
-            <input type="radio" name="chartTime" value="Month" autocomplete="on" checked> Month
+            <input type="radio" name="chartTime" value="Week" autocomplete="on" checked> Week
         </label>
         <label class="btn btn-light">
-            <input type="radio" name="chartTime" value="Quarter" autocomplete="on"> Quarter
+            <input type="radio" name="chartTime" value="Month" autocomplete="on"> Month
         </label>
         <label class="btn btn-light">
             <input type="radio" name="chartTime" value="Year" autocomplete="on"> Year
         </label>
     </div>
+
+    <#if company??>
+
+    <select class="form-control" id="departmentsSelect">
+        <#list company.departments as department>
+            <option value="${department.id}">${department.name}</option>
+        </#list>
+    </select>
+    </#if>
     <canvas id="statsChart"></canvas>
 
 </div>
@@ -125,19 +134,27 @@
 
     var ctx = document.getElementById('statsChart').getContext('2d');
     var statsChart = new Chart(ctx, config);
+    var url = $(location).attr('pathname') + "_ajax";
+    console.log(url);
 
     function ajax_submit() {
 
-        var chart_request = {};
-        chart_request["dataType"] = $('input[name=chartData]:checked').val();
-        chart_request["timeType"] = $('input[name=chartTime]:checked').val();
+        var chart_request = {
+            "dataType": $('input[name=chartData]:checked').val(),
+            "timeType": $('input[name=chartTime]:checked').val()
+        };
+
+        <#if company??>
+            chart_request["departmentId"] =  $('#departmentsSelect').val();
+        </#if>
+
         console.log(chart_request);
 
         $.ajax({
             async: false,
             type: "POST",
             contentType: "application/json",
-            url: "/stats_data_ajax",
+            url: url,
             dataType: 'json',
             data: JSON.stringify(chart_request),
             cache: false,
@@ -194,6 +211,10 @@
         });
 
         $('input[name=chartTime]').change(function () {
+            ajax_submit();
+        });
+        $('#departmentsSelect').change(function() {
+            console.log($(this).val());
             ajax_submit();
         });
     });
