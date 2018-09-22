@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script type="text/javascript" src="js/Chart.bundle.js"></script>
-    <script type="text/javascript" src="js/chart_util.js"></script>
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <meta charset="UTF-8">
-    <title>Re:Flex</title>
-</head>
-<body>
+<#include "base.ftl">
+<#macro title>Re:Flex | Statistics</#macro>
 
+<#macro content>
 
 <div style="width:75%;">
 
@@ -48,7 +40,10 @@
 
 </div>
 
+</#macro>
 
+
+<#macro scripts>
 <script>
 
     // var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -219,7 +214,4 @@
         });
     });
 </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-</body>
-</html>
+</#macro>
