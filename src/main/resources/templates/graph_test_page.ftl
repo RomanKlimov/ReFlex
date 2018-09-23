@@ -10,23 +10,23 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Hello, ${currentUser.name}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h6>Rate your current mood, please</h6>
+                <h6>Rate your current mood</h6>
                 <div class="slidecontainer">
                     <input type="range" min="1" max="10" value="5" class="slider" id="mood">
                 </div>
-                <h6>Rate your tiredness(10 - very tired)</h6>
+                <h6>Rate your current tiredness</h6>
                 <div class="slidecontainer">
                     <input type="range" min="1" max="10" value="5" class="slider" id="tiredness">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="save" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-outline-dark" id="save" data-dismiss="modal">Save</button>
             </div>
         </div>
     </div>
@@ -280,6 +280,18 @@
         });
     };
 
+
+    var options = {
+        title: "Re:Flex",
+        options: {
+        body: "Straighten your back!",
+                icon: "img/reflex-logo.jpg",
+                lang: 'en-US'
+    }
+    };
+
+
+
     $(document).ready(function() {
 
         ajax_submit();
@@ -309,8 +321,13 @@
         $('#init_button').on('click', function(event) {
             console.log('Init button');
         });
+
+        $("#easyNotify").easyNotify(options);
     });
+
 </script>
+
+
 <script>
     var isSameDay = document.getElementById("isSameDay").value;
     console.log(isSameDay);
