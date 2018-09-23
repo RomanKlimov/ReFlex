@@ -6,8 +6,8 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"head"})
+@ToString(exclude = {"head"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

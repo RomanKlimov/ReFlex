@@ -11,9 +11,15 @@ Ideally these elements aren't created until it's confirmed that the
 client supports video/camera, but for the sake of illustrating the
 elements involved, they are created with markup (not JavaScript)
 -->
-    <video id="video" width="640" height="480" autoplay></video>
-    <button id="snap">Snap Photo</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
+    <button id="initialize">Initialize</button>
+    <button id="update">Update</button>
+    <#--<button id="delete_user_session">Delete user session</button>-->
+    <h1 id="is_inside_text">Is user recognized: </h1>
+    <h1 id="is_flexing_text">Is user flexing: </h1>
+    <div style="visibility: hidden">
+        <canvas id="canvas" width="640" height="480" ></canvas>
+        <video id="video" width="640" height="480" autoplay ></video>
+    </div>
     <script>
         // Grab elements, create settings, etc.
         var video = document.getElementById('video');
@@ -37,26 +43,34 @@ elements involved, they are created with markup (not JavaScript)
             var jpegUrl = jpegUrl0.replace(/^data:image\/(png|jpeg);base64,/, "");
             return jpegUrl;
         }
-        var myFormData = new FormData();
+
 
         // Trigger photo take
-        document.getElementById("snap").addEventListener("click", function() {
+        document.getElementById("initialize").addEventListener("click", function() {
+            var myFormData = new FormData();
             context.drawImage(video, 0, 0, 640, 480);
             jpegURL = convertCanvasToImage(canvas);
             var myBlob = base64ToBlob(jpegURL, 'image/jpeg');
 
-            // var byteCharacters = atob(jpegURL);
-            // var byteNumbers = new Array(byteCharacters.length);
-            // for (var i = 0; i < byteCharacters.length; i++) {
-            //     byteNumbers[i] = byteCharacters.charCodeAt(i);
-            // }
-            // var byteArray = new Uint8Array(byteNumbers);
-            // var blob = new Blob([byteArray], {type: contentType});
+            myFormData.append('myImage', myBlob);
+
+            initialize(myFormData);
+        });
+
+//        document.getElementById("delete_user_session").addEventListener("click", function() {
+//            end_user_session();
+//        });
 
 
+        document.getElementById("update").addEventListener("click", function() {
+            var myFormData = new FormData();
+            context.drawImage(video, 0, 0, 640, 480);
+            jpegURL = convertCanvasToImage(canvas);
+            var myBlob = base64ToBlob(jpegURL, 'image/jpeg');
 
             myFormData.append('myImage', myBlob);
-            uploadFile(myFormData);
+
+            update(myFormData);
         });
 
         // This function is used to convert base64 encoding to mime type (blob)
@@ -83,9 +97,9 @@ elements involved, they are created with markup (not JavaScript)
             return new Blob(byteArrays, {type: mime});
         }
 
-        function uploadFile(myFormData) {
+        function initialize(myFormData) {
             $.ajax({
-                url: "/",
+                url: "/initialize_fp",
                 type: "POST",
                 data: myFormData,
                 // enctype: 'multipart/form-data',
@@ -93,8 +107,9 @@ elements involved, they are created with markup (not JavaScript)
                 contentType: false,
                 cache: false,
                 success: function () {
+                    console.log("File uploaded for initialization")
                     // Handle upload success
-                    alert("File succesfully uploaded");
+//                    alert("File succesfully uploaded");
                 },
                 error: function () {
                     // Handle upload error
@@ -102,6 +117,57 @@ elements involved, they are created with markup (not JavaScript)
                 }
             });
         } // function uploadFile
+
+        function update(myFormData) {
+            $.ajax({
+                url: "/update_fp",
+                type: "POST",
+                data: myFormData,
+                // enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                    console.log("File for update uploaded. Results:");
+                    console.log(data);
+                    if (data[0]){
+                        document.getElementById("is_inside_text").innerHTML = "Is user recognized: True"
+                    } else {
+                        document.getElementById("is_inside_text").innerHTML = "Is user recognized: False"
+                    }
+                    if (data[1]){
+                        document.getElementById("is_flexing_text").innerHTML = "Is user flexing: True"
+                    } else {
+                        document.getElementById("is_flexing_text").innerHTML = "Is user flexing: False"
+                    }
+                    // Handle upload success
+//                    alert("File succesfully uploaded");
+                },
+                error: function () {
+                    // Handle upload error
+                    alert("File not uploaded ");
+                }
+            });
+        }
+
+        function end_user_session() {
+            $.ajax({
+                url: "/update_fp",
+                type: "GET",
+                // enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    // Handle upload success
+                    alert("Users cache deleted");
+                },
+                error: function () {
+                    // Handle upload error
+                    alert("Error ");
+                }
+            });
+        }
 
     </script>
     </body>
