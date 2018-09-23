@@ -11,6 +11,37 @@
     <meta charset="UTF-8">
 
     <title><@title/></title>
+    <style>
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -26,7 +57,7 @@
         <input id="posture_track_switch" type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-size="small" data-on="Posture tracking on" data-off="Posture tracking off" style="margin-left: 6px;">
         <input id="eyes_rest_switch" type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-size="small" data-on="Eyes rest notice on" data-off="Eyes rest notice off" >
             </#if>
-        <a class="p-2 text-dark" href="/logout"  style="margin-left: 16px;">Logout</a>
+        <button class="p-2 text-dark btn btn-link"  type="button" data-toggle="modal" data-target="#exampleModal2" style="margin-left: 16px;">Logout</button>
         <#else>
         <a class="p-2 text-dark" href="/signUp"  style="margin-left: 16px;">SignUp</a>
         <a class="p-2 text-dark" href="/login">Login</a>
