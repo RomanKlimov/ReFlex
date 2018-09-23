@@ -1,8 +1,6 @@
 package ru.itis.reflex.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.reflex.exceptions.EmailExistsException;
 import ru.itis.reflex.forms.AdminRegistrationForm;
@@ -60,7 +58,7 @@ public class RegistrationServiceImpl implements RegistrationSevice {
                         .name(bossRegistrationForm.getName())
                         .email(bossRegistrationForm.getEmail())
                         .password(webSecurityConfig.passwordEncoder().encode(bossRegistrationForm.getPassword()))
-                        .department(departmentService.getDepatmentByName(bossRegistrationForm.getDepartment()))
+                        .department(departmentService.getDepartmentByName(bossRegistrationForm.getDepartment()))
                         .company(key.getHead().getCompany())
                         .role(Role.BOSS)
                         .build();

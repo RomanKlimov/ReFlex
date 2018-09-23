@@ -20,8 +20,8 @@ public class PostureData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "num_of_photos")
-    private int photosNum;
+    @Column(name = "smooth_num")
+    private int smoothNum;
 
     @Column(name = "flex_num")
     private int flexNum;

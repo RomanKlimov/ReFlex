@@ -32,7 +32,8 @@ public class AuthController {
             request.getSession().setAttribute("user", user);
             if (user.getRole().equals(Role.ADMIN)){
                 String companyName = companyService.getCompanyByHead(user).getName();
-                return "redirect:/"+companyName+"/admin";
+//                return "redirect:/"+companyName+"/admin";
+                return "redirect:/"+"company_stats";
             }
             if (user.getRole().equals(Role.BOSS)) {
                 String companyName = user.getCompany().getName();
@@ -41,7 +42,8 @@ public class AuthController {
             if (user.getRole().equals(Role.USER)) {
                 String companyName = user.getCompany().getName();
                 String departmentName = user.getDepartment().getName();
-                return "redirect:/"+companyName+"/" + departmentName + "/user";
+                return "redirect:/"+"profile";
+//                return "redirect:/"+companyName+"/" + departmentName + "/user";
             }
         }
         return "redirect:/index";
@@ -49,7 +51,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage(){
-        return "login";
+        return "signIn";
     }
 
     @GetMapping("/logout")
@@ -59,4 +61,6 @@ public class AuthController {
         }
         return "redirect:/index";
     }
+
+
 }

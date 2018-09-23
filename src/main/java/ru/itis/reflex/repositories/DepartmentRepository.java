@@ -7,4 +7,5 @@ import ru.itis.reflex.models.Department;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Integer> {
     Department getByName(String name);
+    Department getById(Long id);
 }

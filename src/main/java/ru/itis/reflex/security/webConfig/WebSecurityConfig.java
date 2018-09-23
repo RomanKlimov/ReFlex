@@ -43,6 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/signUp1").permitAll()
                 .antMatchers("/addSkill").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/login/new").permitAll()
+                .antMatchers("/user_stats", "/company_stats").permitAll()
+                .antMatchers("/user_stats_ajax", "/company_stats_ajax").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/initialize").permitAll()
                 .anyRequest().authenticated()
@@ -55,8 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("logout")
-                .logoutSuccessUrl("/login")
+                .logoutUrl("/logout").logoutSuccessUrl("/login")
                 .permitAll();
 
         http.csrf().disable();
