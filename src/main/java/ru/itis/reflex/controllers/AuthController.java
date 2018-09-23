@@ -41,7 +41,8 @@ public class AuthController {
             if (user.getRole().equals(Role.USER)) {
                 String companyName = user.getCompany().getName();
                 String departmentName = user.getDepartment().getName();
-                return "redirect:/"+companyName+"/" + departmentName + "/user";
+                return "redirect:/"+"profile";
+//                return "redirect:/"+companyName+"/" + departmentName + "/user";
             }
         }
         return "redirect:/index";

@@ -3,43 +3,67 @@
 
 <#macro content>
 
-<div style="width:75%;">
+<div class="container">
 
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-light active">
-            <input type="radio" name="chartData" value="Mood" autocomplete="on" checked> Mood
-        </label>
-        <label class="btn btn-light">
-            <input type="radio" name="chartData" value="Tiredness" autocomplete="on"> Tiredness
-        </label>
-        <label class="btn btn-light">
-            <input type="radio" name="chartData" value="Posture" autocomplete="on"> Posture
-        </label>
+<!--<div style="width:75%;">-->
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+        <h1 class="h2" id="headText">Mood statistics</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+
+
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-secondary active">
+                    <input type="radio" name="chartData" value="Mood" autocomplete="on" checked> Mood
+                </label>
+                <label class="btn btn-outline-secondary">
+                    <input type="radio" name="chartData" value="Tiredness" autocomplete="on"> Tiredness
+                </label>
+                <label class="btn btn-outline-secondary">
+                    <input type="radio" name="chartData" value="Posture" autocomplete="on"> Posture
+                </label>
+            </div>
+
+            <div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-left:10px;">
+                <label class="btn btn-outline-secondary active">
+                    <span data-feather="calendar"></span>
+                    <input type="radio" name="chartTime" value="Week" autocomplete="on" checked> Week
+                </label>
+                <label class="btn btn-outline-secondary">
+                    <input type="radio" name="chartTime" value="Month" autocomplete="on"> Month
+                </label>
+
+
+            <#if currentUser.role == "ADMIN">
+            <#if company??>
+                <select class="form-control" id="departmentsSelect" style="margin-left:10px;">
+                    <#list company.departments as department>
+                        <option value="${department.id}">${department.name} department</option>
+                    </#list>
+                </select>
+            </#if>
+            </#if>
+                <!--
+                <label class="btn btn-outline-secondary">
+                    <input type="radio" name="chartTime" value="Year" autocomplete="on"> Year
+                </label>
+                -->
+            </div>
+            <!--
+
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                <span data-feather="calendar"></span>
+                This week
+            </button>
+                    -->
+        </div>
     </div>
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-light active">
-            <input type="radio" name="chartTime" value="Week" autocomplete="on" checked> Week
-        </label>
-        <label class="btn btn-light">
-            <input type="radio" name="chartTime" value="Month" autocomplete="on"> Month
-        </label>
-        <label class="btn btn-light">
-            <input type="radio" name="chartTime" value="Year" autocomplete="on"> Year
-        </label>
-    </div>
 
-    <#if company??>
 
-    <select class="form-control" id="departmentsSelect">
-        <#list company.departments as department>
-            <option value="${department.id}">${department.name}</option>
-        </#list>
-    </select>
-    </#if>
     <canvas id="statsChart"></canvas>
 
 </div>
-
+<!--</div>-->
 </#macro>
 
 
@@ -67,8 +91,7 @@
         options: {
             responsive: true,
             title: {
-                text: 'Mood statistics',
-                display: true
+                display: false
             },
             tooltips: {
                 mode: 'index',
@@ -110,27 +133,27 @@
 
     var dataset1 = [{
         label: 'Morning data',
-        backgroundColor: window.chartColors.red,
-        borderColor: window.chartColors.red,
-        fill: false
+        backgroundColor: window.chartColors.green_t,
+        borderColor: window.chartColors.green,
+        fill: true
     }, {
         label: 'Evening data',
-        backgroundColor: window.chartColors.blue,
-        borderColor: window.chartColors.blue,
-        fill: false
+        backgroundColor: window.chartColors.purple_t,
+        borderColor: window.chartColors.purple,
+        fill: true
     }];
 
     var dataset2 = [{
         label: 'Posture data',
-        backgroundColor: window.chartColors.red,
-        borderColor: window.chartColors.red,
-        fill: false
+        backgroundColor: window.chartColors.green_t,
+        borderColor: window.chartColors.green,
     }];
 
     var ctx = document.getElementById('statsChart').getContext('2d');
     var statsChart = new Chart(ctx, config);
     var url = $(location).attr('pathname') + "_ajax";
     console.log(url);
+    Chart.defaults.global.defaultFontSize = 14;
 
     function ajax_submit() {
 
@@ -164,8 +187,9 @@
                 //}
 
                // statsChart.data.labels = labels;
+                $("#headText").text(chart_request["dataType"] + " statistics");
 
-                config.options.title.text = chart_request["dataType"] + " statistics";
+
                 if (chart_request["timeType"] === "Year") {
                     config.options.scales.xAxes[0].time.unit = 'month';
                     config.options.scales.xAxes[0].scaleLabel.labelString = 'Month';
