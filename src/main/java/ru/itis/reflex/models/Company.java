@@ -34,4 +34,6 @@ public class Company {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Department> departments = new ArrayList<>();
 
+
+
 }

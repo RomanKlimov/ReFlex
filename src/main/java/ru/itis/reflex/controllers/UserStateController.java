@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.itis.reflex.models.User;
-import org.springframework.web.bind.annotation.*;
 import ru.itis.reflex.services.interfaces.AuthService;
 import ru.itis.reflex.services.interfaces.FPAnalyzerService;
 import ru.itis.reflex.services.interfaces.FPCacheService;

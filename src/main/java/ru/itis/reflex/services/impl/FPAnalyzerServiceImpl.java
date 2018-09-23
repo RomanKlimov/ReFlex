@@ -25,7 +25,7 @@ public class FPAnalyzerServiceImpl implements FPAnalyzerService {
         Mat mat = Imgcodecs.imdecode(new MatOfByte(userPhotoBytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         //TODO ИЗМЕНИТЬ НА ОТНОСИТЕЛЬНЫЙ ПУТЬ
-        CascadeClassifier classifier = new CascadeClassifier("C:\\Bce\\programing\\II Projects\\Hackaton_ReFlex\\ReFlex\\src\\main\\resources\\FaceDetectionAlgorithms\\lbpcascade_frontalface.xml");
+        CascadeClassifier classifier = new CascadeClassifier("/home/kate/repositories/ReFlex/src/main/resources/FaceDetectionAlgorithms/lbpcascade_frontalface.xml");
         MatOfRect faceDetections = new MatOfRect();
         classifier.detectMultiScale(mat, faceDetections);
 
@@ -61,7 +61,7 @@ public class FPAnalyzerServiceImpl implements FPAnalyzerService {
         Mat mat = Imgcodecs.imdecode(new MatOfByte(userPhotoBytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         //TODO ИЗМЕНИТЬ НА ОТНОСИТЕЛЬНЫЙ ПУТЬ
-        CascadeClassifier classifier = new CascadeClassifier("C:\\Bce\\programing\\II Projects\\Hackaton_ReFlex\\ReFlex\\src\\main\\resources\\FaceDetectionAlgorithms\\lbpcascade_frontalface.xml");
+        CascadeClassifier classifier = new CascadeClassifier("/home/kate/repositories/ReFlex/src/main/resources/FaceDetectionAlgorithms/lbpcascade_frontalface.xml");
         MatOfRect faceDetections = new MatOfRect();
         classifier.detectMultiScale(mat, faceDetections);
         fpCacheService.initializeFP(user, new FPInfo(faceDetections.toArray()[0].y, faceDetections.toArray()[0].height + faceDetections.toArray()[0].width));
