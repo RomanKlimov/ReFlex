@@ -32,7 +32,8 @@ public class AuthController {
             request.getSession().setAttribute("user", user);
             if (user.getRole().equals(Role.ADMIN)){
                 String companyName = companyService.getCompanyByHead(user).getName();
-                return "redirect:/"+companyName+"/admin";
+//                return "redirect:/"+companyName+"/admin";
+                return "redirect:/"+"company_stats";
             }
             if (user.getRole().equals(Role.BOSS)) {
                 String companyName = user.getCompany().getName();

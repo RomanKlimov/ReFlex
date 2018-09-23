@@ -39,8 +39,8 @@ public class GraphDataController {
     @PostMapping("/profile_ajax")
     public ResponseEntity<?> getUserDataViaAjax(@RequestBody ChartType chartType, Authentication authentication) {
 
-        User currentUser = userService.getUser(new Long(4)); // for test
-        //User currentUser = authService.getUserByAuthentication(authentication);
+        //User currentUser = userService.getUser(new Long(4)); // for test
+        User currentUser = authService.getUserByAuthentication(authentication);
 
         JSONObject jsonData;
 

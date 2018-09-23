@@ -37,27 +37,34 @@ public class GraphsTestDataGenerator {
             c.setAutoCommit(false);
             System.out.println("Opened database successfully");
 
-//            addCompany();
+//           addCompany();
 
-            List<Date> dates = createDateRange(400);
+            List<Date> dates = createDateRange(50);
 
+            //for example user
+            int id = 3;
             for (Date date: dates){
-                addMoodData(4, date);
-                addTirednessData(4, date);
-                addPostureData(4, date);
+                addMoodData(id, date);
+                addTirednessData(id, date);
+                addPostureData(id, date);
             }
 
-/*
-            for (int i=100; i<150; i++){
-                addUser(i, "email"+i+"@gmail.com", 1, 100);
+            //for departments
 
-                for (Date date: dates){
-                    addMoodData(i, date);
-                    addTirednessData(i, date);
-                    addPostureData(i, date);
+            for (int d=1; d<4; d++) {
+                for (int i = 100; i < 150; i++) {
+                    Integer uid = Integer.valueOf(i + "" + d);
+                    addUser(uid, "email" + i + d + "@gmail.com", d, 1);
+
+                    for (Date date : dates) {
+                        addMoodData(uid, date);
+                        addTirednessData(uid, date);
+                        addPostureData(uid, date);
+                    }
+
                 }
             }
-*/
+
             stmt.close();
             c.commit();
             c.close();

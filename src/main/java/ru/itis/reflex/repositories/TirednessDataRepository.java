@@ -24,7 +24,8 @@ public interface TirednessDataRepository extends JpaRepository<TirednessData, In
             "FROM TirednessData d " +
             "JOIN d.user u " +
             "WHERE d.date >= :date AND u.department = :department " +
-            "GROUP BY d.date")
+            "GROUP BY d.date " +
+            "ORDER BY d.date")
     List<AggregateResult> findAvgTirednessByDepartment(@Param("department")Department department, @Param("date")Date date);
 
 }

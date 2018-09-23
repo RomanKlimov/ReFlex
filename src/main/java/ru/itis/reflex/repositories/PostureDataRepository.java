@@ -25,7 +25,8 @@ public interface PostureDataRepository extends JpaRepository<PostureData, Intege
             "FROM PostureData p " +
             "JOIN p.user u " +
             "WHERE p.date >= :date AND u.department = :department " +
-            "GROUP BY p.date")
+            "GROUP BY p.date " +
+            "ORDER BY p.date")
     List<PostureAggregateResult> findAvgPostureByDepartment(@Param("department")Department department, @Param("date")Date date);
 
 }

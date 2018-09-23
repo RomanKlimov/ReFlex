@@ -26,7 +26,8 @@ public interface MoodDataRepository extends JpaRepository<MoodData, Integer> {
             "FROM MoodData m " +
             "JOIN m.user u " +
             "WHERE m.date >= :date AND u.department = :department " +
-            "GROUP BY m.date")
+            "GROUP BY m.date " +
+            "ORDER BY m.date")
     List<AggregateResult> findAvgMoodByDepartment(@Param("department")Department department, @Param("date")Date date);
 
 }
