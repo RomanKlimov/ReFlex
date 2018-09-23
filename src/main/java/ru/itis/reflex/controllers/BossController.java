@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.itis.reflex.models.Company;
 import ru.itis.reflex.models.Key;
+import ru.itis.reflex.models.MoodData;
 import ru.itis.reflex.models.User;
 import ru.itis.reflex.security.webConfig.WebSecurityConfig;
-import ru.itis.reflex.services.interfaces.AuthService;
-import ru.itis.reflex.services.interfaces.CompanyService;
-import ru.itis.reflex.services.interfaces.EmailService;
-import ru.itis.reflex.services.interfaces.KeyService;
+import ru.itis.reflex.services.interfaces.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -34,12 +33,20 @@ public class BossController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private MoodDataService moodDataService;
+
     @GetMapping("/{company}/boss")
     public String apply(@PathVariable("company") String company, Authentication authentication, ModelMap modelMap){
         User user = authService.getUserByAuthentication(authentication);
         Company companyByName = companyService.getCompanyByName(company);
         modelMap.addAttribute("user", user);
         modelMap.addAttribute("company", companyByName);
+        Date date = new Date(System.currentTimeMillis());
+//        List<MoodData> moodDataByDate = moodDataService.getMoodDataByDate(user, date);
+//        if (moodDataByDate.size() == 1 && moodDataByDate.get(0) == null){
+//            modelMap.addAttribute("checkMood", true);
+//        } else modelMap.addAttribute("checkMood", false);
 
         return "boss";
     }
