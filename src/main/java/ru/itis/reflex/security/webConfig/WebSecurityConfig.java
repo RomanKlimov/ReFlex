@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user_stats", "/company_stats").permitAll()
                 .antMatchers("/user_stats_ajax", "/company_stats_ajax").permitAll()
                 .antMatchers("/").permitAll()
+                .antMatchers("/initialize").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login")

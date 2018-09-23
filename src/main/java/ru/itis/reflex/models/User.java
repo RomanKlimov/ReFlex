@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"company"})
+//@EqualsAndHashCode(exclude = {"company"})
 public class User {
 
     @Id
@@ -45,5 +45,21 @@ public class User {
             fetch = FetchType.LAZY,
             mappedBy = "head")
     private List<Key> keys;
+
+    @Override
+    public int hashCode(){
+        return Math.toIntExact(this.getId());
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof User) {
+            User u = (User)o;
+            if (   u.getEmail().equals(this.getEmail()) && this.getId() == ((User) o).getId()  ){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

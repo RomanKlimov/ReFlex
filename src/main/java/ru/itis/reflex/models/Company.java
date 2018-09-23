@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"head"})
 @ToString(exclude = {"head"})
 @Builder
 @NoArgsConstructor

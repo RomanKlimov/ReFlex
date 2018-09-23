@@ -7,14 +7,19 @@ import org.springframework.stereotype.Repository;
 import ru.itis.reflex.models.Department;
 import ru.itis.reflex.models.PostureData;
 import ru.itis.reflex.models.User;
+import ru.itis.reflex.models.User;
 import ru.itis.reflex.util.AggregateResult;
 import ru.itis.reflex.util.PostureAggregateResult;
+
+import java.util.Date;
+import java.util.Optional;
 
 import java.sql.Date;
 import java.util.List;
 
 @Repository
 public interface PostureDataRepository extends JpaRepository<PostureData, Integer> {
+    Optional<PostureData> findOneByUserAndDate(User user, Date date);
     List<PostureData> findAllByUserAndDateAfter(User user, Date date);
     List<PostureData> findAllByUser(User user);
 
