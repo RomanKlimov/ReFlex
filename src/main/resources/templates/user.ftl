@@ -110,7 +110,7 @@
 <script>
     var isSameDay = document.getElementById("isSameDay").value;
     console.log(isSameDay);
-    if (isSameDay === "true") {
+    if (isSameDay === "false") {
         $('#exampleModal').modal('show');
     }
 

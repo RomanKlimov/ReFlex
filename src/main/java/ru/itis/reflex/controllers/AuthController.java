@@ -51,7 +51,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage(){
-        return "login";
+        return "signIn";
     }
 
     @GetMapping("/logout")
@@ -61,4 +61,6 @@ public class AuthController {
         }
         return "redirect:/index";
     }
+
+
 }
