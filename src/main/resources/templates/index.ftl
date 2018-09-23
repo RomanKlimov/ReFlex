@@ -11,11 +11,15 @@ Ideally these elements aren't created until it's confirmed that the
 client supports video/camera, but for the sake of illustrating the
 elements involved, they are created with markup (not JavaScript)
 -->
-    <video id="video" width="640" height="480" autoplay></video>
     <button id="initialize">Initialize</button>
     <button id="update">Update</button>
-    <button id="delete_user_session">Delete user session</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
+    <#--<button id="delete_user_session">Delete user session</button>-->
+    <h1 id="is_inside_text">Is user recognized: </h1>
+    <h1 id="is_flexing_text">Is user flexing: </h1>
+    <div style="visibility: hidden">
+        <canvas id="canvas" width="640" height="480" ></canvas>
+        <video id="video" width="640" height="480" autoplay ></video>
+    </div>
     <script>
         // Grab elements, create settings, etc.
         var video = document.getElementById('video');
@@ -53,9 +57,9 @@ elements involved, they are created with markup (not JavaScript)
             initialize(myFormData);
         });
 
-        document.getElementById("delete_user_session").addEventListener("click", function() {
-            end_user_session();
-        });
+//        document.getElementById("delete_user_session").addEventListener("click", function() {
+//            end_user_session();
+//        });
 
 
         document.getElementById("update").addEventListener("click", function() {
@@ -103,8 +107,9 @@ elements involved, they are created with markup (not JavaScript)
                 contentType: false,
                 cache: false,
                 success: function () {
+                    console.log("File uploaded for initialization")
                     // Handle upload success
-                    alert("File succesfully uploaded");
+//                    alert("File succesfully uploaded");
                 },
                 error: function () {
                     // Handle upload error
@@ -122,9 +127,21 @@ elements involved, they are created with markup (not JavaScript)
                 processData: false,
                 contentType: false,
                 cache: false,
-                success: function () {
+                success: function (data) {
+                    console.log("File for update uploaded. Results:");
+                    console.log(data);
+                    if (data[0]){
+                        document.getElementById("is_inside_text").innerHTML = "Is user recognized: True"
+                    } else {
+                        document.getElementById("is_inside_text").innerHTML = "Is user recognized: False"
+                    }
+                    if (data[1]){
+                        document.getElementById("is_flexing_text").innerHTML = "Is user flexing: True"
+                    } else {
+                        document.getElementById("is_flexing_text").innerHTML = "Is user flexing: False"
+                    }
                     // Handle upload success
-                    alert("File succesfully uploaded");
+//                    alert("File succesfully uploaded");
                 },
                 error: function () {
                     // Handle upload error

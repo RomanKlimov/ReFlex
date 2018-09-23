@@ -21,7 +21,7 @@ public class FPAnalyzerServiceImpl implements FPAnalyzerService {
     FPCacheService fpCacheService;
 
     @Override
-    public void update(User user, byte[] userPhotoBytes) {
+    public boolean[] update(User user, byte[] userPhotoBytes) {
         Mat mat = Imgcodecs.imdecode(new MatOfByte(userPhotoBytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         //TODO ИЗМЕНИТЬ НА ОТНОСИТЕЛЬНЫЙ ПУТЬ
@@ -51,7 +51,7 @@ public class FPAnalyzerServiceImpl implements FPAnalyzerService {
         System.out.println(faceDetections.toList());
         System.out.println("------");
         fpCacheService.updateFP(user, isInsidePhoto, isFlexing);
-
+        return new boolean[]{isInsidePhoto, isFlexing};
     }
 
     @Override

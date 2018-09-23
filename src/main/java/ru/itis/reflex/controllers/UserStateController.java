@@ -44,15 +44,15 @@ public class UserStateController {
     }
 
     @PostMapping("/update_fp")
-    public ResponseEntity<?> updateUserPosition(@RequestParam MultipartFile myImage,  Authentication authentication) throws IOException {
+    public ResponseEntity updateUserPosition(@RequestParam MultipartFile myImage,  Authentication authentication) throws IOException {
         User user = authService.getUserByAuthentication(authentication);
         if (myImage.isEmpty()) {
             return new ResponseEntity<>("Error", HttpStatus.OK);
         } else {
-            fpAnalyzerService.update(user, myImage.getBytes());
+            boolean[] states = fpAnalyzerService.update(user, myImage.getBytes());
             System.out.println("update " + fpCacheService.toString());
+            return ResponseEntity.ok(states);
         }
-        return new ResponseEntity<Object>("Updated", HttpStatus.OK);
     }
 
     @GetMapping("/check_flex")
