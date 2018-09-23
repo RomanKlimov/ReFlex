@@ -129,14 +129,14 @@ public class FPCacheServiceImpl implements FPCacheService {
     private void saveOptionalPostureDataToDB(User user, Optional<PostureData> userPostureDataOptional){
         if (userPostureDataOptional.isPresent()) {
             PostureData userPostureData = userPostureDataOptional.get();
-            userPostureData.setPhotosNum(userPostureData.getPhotosNum() + usersFaceInfo.get(user).getTotalNOfPositions());
+            userPostureData.setSmoothNum(userPostureData.getSmoothNum() + usersFaceInfo.get(user).getTotalNOfPositions());
             userPostureData.setFlexNum(usersFaceInfo.get(user).getTotalNOfBadPositions() + userPostureData.getFlexNum());
             postureDataRepository.save(userPostureData);
         } else {
             PostureData postureData = PostureData.builder()
                     .date(new Date(usersFaceInfo.get(user).getStartOfFollowing()))
                     .flexNum(usersFaceInfo.get(user).getTotalNOfBadPositions())
-                    .photosNum(usersFaceInfo.get(user).getTotalNOfPositions())
+                    .smoothNum(usersFaceInfo.get(user).getTotalNOfPositions())
                     .user(user)
                     .build();
             postureDataRepository.save(postureData);
