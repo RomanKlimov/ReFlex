@@ -219,7 +219,7 @@
                 console.log("ERROR : ", e);
             }
         });
-    }
+    };
 
     $(document).ready(function() {
 
@@ -232,9 +232,23 @@
         $('input[name=chartTime]').change(function () {
             ajax_submit();
         });
+
         $('#departmentsSelect').change(function() {
             console.log($(this).val());
             ajax_submit();
+        });
+
+
+        $('#posture_track_switch').change(function() {
+            console.log('posture_track_switch ' + $(this).prop('checked'));
+        });
+
+        $('#eyes_rest_switch').change(function() {
+            console.log('posture_track_switch ' + $(this).prop('checked'));
+        });
+
+        $('#init_button').on('click', function(event) {
+            console.log('Init button');
         });
     });
 </script>

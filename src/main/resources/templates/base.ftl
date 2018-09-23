@@ -21,10 +21,10 @@
     <nav class="my-2 my-md-0 mr-md-3">
         <#if currentUser??>
             <#if currentUser.role == "USER">
-        <button type="button" class="btn btn-outline-dark btn-sm" style="margin-right: 16px;">Set position</button>
+        <button id="init_button" type="button" class="btn btn-outline-dark btn-sm" style="margin-right: 16px;">Set position</button>
 
-        <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-size="small" data-on="Posture tracking on" data-off="Posture tracking off" style="margin-left: 6px;">
-        <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-size="small" data-on="Eyes rest notice on" data-off="Eyes rest notice off" >
+        <input id="posture_track_switch" type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-size="small" data-on="Posture tracking on" data-off="Posture tracking off" style="margin-left: 6px;">
+        <input id="eyes_rest_switch" type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-size="small" data-on="Eyes rest notice on" data-off="Eyes rest notice off" >
             </#if>
         <a class="p-2 text-dark" href="/logout"  style="margin-left: 16px;">Logout</a>
         <#else>
