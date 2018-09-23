@@ -1,6 +1,7 @@
 package ru.itis.reflex.models;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

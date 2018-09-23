@@ -32,4 +32,35 @@ public class MoodDataServiceImpl implements MoodDataService{
     public List<MoodData> getMoodData() {
         return null;
     }
+
+    @Override
+    public MoodData getLastMoodByUser(User user) {
+        return moodDataRepository.findFirstByUserOrderByDateDesc(user);
+    }
+
+    @Override
+    public List<MoodData> getMoodDataBy(User user, java.util.Date date) {
+        return null;
+    }
+
+
+
+    @Override
+    public void addMorningMoodData(User user, Integer morningValue) {
+
+        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+        MoodData moodData = MoodData.builder()
+                .date(date)
+                .user(user)
+                .morningValue(morningValue)
+                .build();
+        moodDataRepository.save(moodData);
+    }
+
+    @Override
+    public void addEveningMoodData(User user, Integer eveningValue) {
+        MoodData lastMoodData = moodDataRepository.findFirstByUserOrderByDateDesc(user);
+        lastMoodData.setEveningValue(eveningValue);
+        moodDataRepository.save(lastMoodData);
+    }
 }

@@ -9,13 +9,19 @@ import ru.itis.reflex.models.MoodData;
 import ru.itis.reflex.models.User;
 import ru.itis.reflex.util.AggregateResult;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface MoodDataRepository extends JpaRepository<MoodData, Integer> {
 
     List<MoodData> findAllByUserAndDateAfter(User user, Date date);
+
+    List<MoodData> findByUser(User user);
+
+    MoodData findFirstByUserOrderByDateDesc(User user);
+
     List<MoodData> findAllByUser(User user);
 
 
