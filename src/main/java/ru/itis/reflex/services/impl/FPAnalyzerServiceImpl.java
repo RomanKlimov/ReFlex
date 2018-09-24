@@ -13,7 +13,7 @@ import ru.itis.reflex.util.FPInfo;
 @Service
 public class FPAnalyzerServiceImpl implements FPAnalyzerService {
     //TODO ПРОПЕРТИС
-    private static final int MAXIMUM_FLEXED_PHOTOS_NUM = 5;
+    private static final int MAXIMUM_FLEXED_PHOTOS_NUM = 2;
     private static final double DOWN_MARGIN_FACTOR = 1.02;
     private static final double HW_MARGIN_FACTOR = 1.1;
 
@@ -25,7 +25,7 @@ public class FPAnalyzerServiceImpl implements FPAnalyzerService {
         Mat mat = Imgcodecs.imdecode(new MatOfByte(userPhotoBytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         //TODO ИЗМЕНИТЬ НА ОТНОСИТЕЛЬНЫЙ ПУТЬ
-        CascadeClassifier classifier = new CascadeClassifier("/home/roman/GitHub/ReFlex/src/main/resources/FaceDetectionAlgorithms/lbpcascade_frontalface.xml");
+        CascadeClassifier classifier = new CascadeClassifier("/home/kate/repositories/ReFlex/src/main/resources/FaceDetectionAlgorithms/lbpcascade_frontalface.xml");
         MatOfRect faceDetections = new MatOfRect();
         classifier.detectMultiScale(mat, faceDetections);
 
@@ -61,7 +61,7 @@ public class FPAnalyzerServiceImpl implements FPAnalyzerService {
         Mat mat = Imgcodecs.imdecode(new MatOfByte(userPhotoBytes), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         //TODO ИЗМЕНИТЬ НА ОТНОСИТЕЛЬНЫЙ ПУТЬ
-        CascadeClassifier classifier = new CascadeClassifier("/home/roman/GitHub/ReFlex/src/main/resources/FaceDetectionAlgorithms/lbpcascade_frontalface.xml");
+        CascadeClassifier classifier = new CascadeClassifier("/home/kate/repositories/ReFlex/src/main/resources/FaceDetectionAlgorithms/lbpcascade_frontalface.xml");
         MatOfRect faceDetections = new MatOfRect();
         classifier.detectMultiScale(mat, faceDetections);
         fpCacheService.initializeFP(user, new FPInfo(faceDetections.toArray()[0].y, faceDetections.toArray()[0].height + faceDetections.toArray()[0].width));
@@ -70,7 +70,7 @@ public class FPAnalyzerServiceImpl implements FPAnalyzerService {
     @Override
     public boolean isFlexing(User user) {
         FPInfo userFPInfo = fpCacheService.getFPInfo(user);
-        return userFPInfo.getNOfBadPositionsInARow() > MAXIMUM_FLEXED_PHOTOS_NUM;
+        return userFPInfo.getNOfBadPositionsInARow() >= MAXIMUM_FLEXED_PHOTOS_NUM;
     }
 
     @Override

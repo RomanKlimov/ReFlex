@@ -2,15 +2,16 @@
 <#macro title>Re:Flex | Statistics</#macro>
 
 <#macro content>
+<#if isSameDay??>
     <input value="${isSameDay?c}" id="isSameDay" hidden />
-
+</#if>
 
 <!-- Modal morning -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hello, ${currentUser.name}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Good morning, ${currentUser.name}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -38,23 +39,23 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Good evening, ${currentUser.name}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h6>Rate your current mood, please</h6>
+                <h6>Rate your current mood</h6>
                 <div class="slidecontainer">
                     <input type="range" min="1" max="10" value="5" class="slider" id="moodEv">
                 </div>
-                <h6>Rate your tiredness(10 - very tired)</h6>
+                <h6>Rate your current tiredness</h6>
                 <div class="slidecontainer">
                     <input type="range" min="1" max="10" value="5" class="slider" id="tirednessEv">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="logout" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-outline-dark" id="logout" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
@@ -121,6 +122,12 @@
 
     <canvas id="statsChart"></canvas>
 
+</div>
+
+
+<div style="visibility: hidden">
+    <canvas id="canvas" width="640" height="480" ></canvas>
+    <video id="video" width="640" height="480" autoplay ></video>
 </div>
 <!--</div>-->
 </#macro>
@@ -281,15 +288,166 @@
     };
 
 
+
+    var isUpdateProccessStarted = false;
+    var shouldFlexBeChecked = false;
+    var shouldTirednessBeChecked = false;
+
+    // Grab elements, create settings, etc.
+    var video = document.getElementById('video');
+
+    // Get access to the camera!
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        });
+    }
+    // Elements for taking the snapshot
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var video = document.getElementById('video');
+    var myImage;
+
+    function convertCanvasToImage(canvas) {
+        var jpegUrl0 = canvas.toDataURL("image/jpeg");
+        var jpegUrl = jpegUrl0.replace(/^data:image\/(png|jpeg);base64,/, "");
+        return jpegUrl;
+    }
+
+    function updateSome() {
+        var myFormData = new FormData();
+        context.drawImage(video, 0, 0, 640, 480);
+        jpegURL = convertCanvasToImage(canvas);
+        var myBlob = base64ToBlob(jpegURL, 'image/jpeg');
+
+        myFormData.append('myImage', myBlob);
+
+        update(myFormData);
+    };
+
+    // This function is used to convert base64 encoding to mime type (blob)
+    function base64ToBlob(base64, mime)
+    {
+        mime = mime || '';
+        var sliceSize = 1024;
+        var byteChars = window.atob(base64);
+        var byteArrays = [];
+
+        for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
+            var slice = byteChars.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+
+        return new Blob(byteArrays, {type: mime});
+    }
+
+    function initialize(myFormData) {
+        $.ajax({
+            url: "/initialize_fp",
+            type: "POST",
+            data: myFormData,
+            // enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function () {
+                isUpdateProccessStarted = true;
+                //ВКЛЮЧИТЬ ЕГО
+                console.log("File uploaded for initialization")
+
+                // Handle upload success
+//                    alert("File succesfully uploaded");
+            },
+            error: function () {
+                // Handle upload error
+                alert("Face not detected");
+            }
+        });
+    } // function uploadFile
+
+    function update(myFormData) {
+        $.ajax({
+            url: "/update_fp",
+            type: "POST",
+            data: myFormData,
+            // enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+                console.log(data);
+                // Handle upload success
+//                    alert("File succesfully uploaded");
+            },
+            error: function () {
+                // Handle upload error
+                // alert("File not uploaded ");
+            }
+        });
+    }
+
+    var q = true;
+
+    var closeNot = function() {
+        q = true;
+    };
+
     var options = {
         title: "Re:Flex",
         options: {
-        body: "Straighten your back!",
-                icon: "img/reflex-logo.jpg",
-                lang: 'en-US'
-    }
+            body: "Straighten your back!",
+            icon: "img/reflex-logo.jpg",
+            lang: 'en-US',
+            onClose: closeNot,
+        }
     };
 
+    var checkForFlex = function(){
+        $.ajax({
+            url: "/check_flex",
+            type: "GET",
+            // enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+                if(data && q){
+                    q = false;
+                    $("#easyNotify").easyNotify(options);
+                }
+                console.log(data);
+            },
+            error: function (data) {
+                // Handle upload error}
+            }
+        });
+    };
+
+
+    var cycledFun = function() {
+        if (isUpdateProccessStarted) {
+            var myFormData = new FormData();
+            context.drawImage(video, 0, 0, 640, 480);
+            jpegURL = convertCanvasToImage(canvas);
+            var myBlob = base64ToBlob(jpegURL, 'image/jpeg');
+            myFormData.append('myImage', myBlob);
+            update(myFormData);
+
+            // if (shouldFlexBeChecked) {
+                checkForFlex();
+            // }
+        }
+    };
 
 
     $(document).ready(function() {
@@ -309,20 +467,35 @@
             ajax_submit();
         });
 
-
         $('#posture_track_switch').change(function() {
+
+            if (shouldFlexBeChecked) {
+                shouldFlexBeChecked = false;
+            } else {
+                shouldFlexBeChecked = true;
+                isUpdateProccessStarted = true;
+
+            }
             console.log('posture_track_switch ' + $(this).prop('checked'));
+
         });
 
-        $('#eyes_rest_switch').change(function() {
-            console.log('posture_track_switch ' + $(this).prop('checked'));
-        });
 
         $('#init_button').on('click', function(event) {
+            var myFormData = new FormData();
+            context.drawImage(video, 0, 0, 640, 480);
+            jpegURL = convertCanvasToImage(canvas);
+            var myBlob = base64ToBlob(jpegURL, 'image/jpeg');
+
+            myFormData.append('myImage', myBlob);
+
+            initialize(myFormData);
             console.log('Init button');
         });
 
-        $("#easyNotify").easyNotify(options);
+
+        var timerId = setInterval(cycledFun, 1000 * 3);
+
     });
 
 </script>
@@ -331,7 +504,7 @@
 <script>
     var isSameDay = document.getElementById("isSameDay").value;
     console.log(isSameDay);
-    if (isSameDay === "true") {
+    if (isSameDay === "false") {
         $('#exampleModal').modal('show');
     }
 
@@ -369,4 +542,7 @@
     }
 
 </script>
+
+
+
 </#macro>
